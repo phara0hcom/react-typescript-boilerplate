@@ -11,7 +11,7 @@ Included some css with dark/light theming, might remove it since you don't want 
 - [x] Dev server
 - [x] Hello World
 - [x] scss modules and imports
-- [ ] Full color theming or remove it
+- [ ] Update webpack to v5
 - [ ] Improve webpack build production script
 - [ ] GitHub Pages deploy script
 - [ ] Cypress testing
@@ -22,6 +22,7 @@ Included some css with dark/light theming, might remove it since you don't want 
     - [ ] icon button
   - [ ] table
   - [ ] modal
+- [ ] Full color theming or remove it
 
 <br>
 
@@ -43,6 +44,7 @@ Starts dev server and opens browser with hot reload.
 ```shell
 npm start
 ```
+
 <br>
 
 ### Build
@@ -50,6 +52,7 @@ npm start
 ```shell
 npm run build
 ```
+
 <br>
 
 ---
