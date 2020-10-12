@@ -12,7 +12,7 @@ Included some css with dark/light theming, might remove it since you don't want 
 - [x] Hello World
 - [x] scss modules and imports
 - [x] Update webpack to v5
-- [ ] Improve webpack build production script
+- [x] Improve webpack build production script
 - [ ] GitHub Pages deploy script
 - [ ] Cypress testing
 - [ ] add some modules

@@ -1,5 +1,6 @@
 const path = require('path');
 const sass = require('sass');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var config = {
   resolve: {
@@ -15,7 +16,6 @@ var config = {
   devtool: 'inline-source-map',
   entry: path.resolve(__dirname, 'src', 'index.tsx'),
   output: {
-    path: path.resolve(__dirname, 'public'),
     filename: 'bundle.js',
   },
   module: {
@@ -82,6 +82,11 @@ var config = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'public/index.html'),
+    }),
+  ],
 };
 
 module.exports = (env, argv) => {
