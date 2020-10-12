@@ -23,7 +23,7 @@ var config = {
       {
         test: /\.js(x?)$/,
         exclude: /node_modules/,
-        loader: ['babel-loader', 'eslint-loader'],
+        use: ['babel-loader', 'eslint-loader'],
       },
       {
         test: /\.ts(x?)$/,
@@ -38,7 +38,7 @@ var config = {
             loader: 'css-loader',
             options: {
               modules: {
-                localIdentName: '[name]__[local]___[hash:base64:5]',
+                localIdentName: '[name]__[local]___[contenthash:base64:5]',
               },
               importLoaders: 1,
               sourceMap: true,

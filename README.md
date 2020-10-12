@@ -11,7 +11,7 @@ Included some css with dark/light theming, might remove it since you don't want 
 - [x] Dev server
 - [x] Hello World
 - [x] scss modules and imports
-- [ ] Update webpack to v5
+- [x] Update webpack to v5
 - [ ] Improve webpack build production script
 - [ ] GitHub Pages deploy script
 - [ ] Cypress testing
