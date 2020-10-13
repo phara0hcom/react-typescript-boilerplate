@@ -2,120 +2,196 @@ const path = require('path');
 const sass = require('sass');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
-
-var config = {
-  resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
-  },
-  devServer: {
-    contentBase: path.join(__dirname, 'public'),
-    compress: true,
-    hot: true,
-    open: true,
-    port: 3000,
-  },
-  devtool: 'inline-source-map',
-  entry: path.resolve(__dirname, 'src', 'index.tsx'),
-  output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: 'bundle.js',
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js(x?)$/,
-        exclude: /node_modules/,
-        use: ['babel-loader', 'eslint-loader'],
-      },
-      {
-        test: /\.ts(x?)$/,
-        exclude: /node_modules/,
-        use: ['babel-loader', 'eslint-loader'],
-      },
-      {
-        test: /\.module\.s(a|c)ss$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              modules: {
-                localIdentName: '[name]__[local]___[contenthash:base64:5]',
-              },
-              importLoaders: 1,
-              sourceMap: true,
-            },
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: true,
-              implementation: sass,
-            },
-          },
-        ],
-      },
-      {
-        test: /\.s(a|c)ss$/,
-        exclude: /\.module.(s(a|c)ss)$/,
-        use: [
-          // Creates `style` nodes from JS strings
-          'style-loader',
-          // Translates CSS into CommonJS
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true,
-            },
-          },
-          // Compiles Sass to CSS
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: true,
-              implementation: sass,
-            },
-          },
-        ],
-      },
-      {
-        test: /\.(png|svg|jpg|gif)$/i,
-        use: ['file-loader'],
-      },
-    ],
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'public/index.html'),
-    }),
-  ],
-};
+const TerserPlugin = require('terser-webpack-plugin');
+const safePostCssParser = require('postcss-safe-parser');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = (env, argv) => {
-  if (argv.mode === 'development') {
-    config.devtool = 'source-map';
-    config.plugins.push(
-      new Dotenv({
-        path: './.env.development.local', // load this now instead of the ones in '.env'
-        safe: false, // If true, load '.env.example' to verify the '.env' variables are all set. Can also be a string to a different file.
-        allowEmptyValues: true, // Whether to allow empty strings in safe mode. If false, will throw an error if any env variables are empty (but only if safe mode is enabled).
-        systemvars: true, // load all the predefined 'process.env' variables which will trump anything local per dotenv specs.
-        silent: true, // hide any errors
-        defaults: false, // load '.env.defaults' as the default values if empty.
-      })
-    );
-  } else {
-    config.plugins.push(
-      new Dotenv({
-        path: './.env.production.local', // load this now instead of the ones in '.env'
-        safe: false, // If true, load '.env.example' to verify the '.env' variables are all set. Can also be a string to a different file.
-        allowEmptyValues: true, // Whether to allow empty strings in safe mode. If false, will throw an error if any env variables are empty (but only if safe mode is enabled).
-        systemvars: true, // load all the predefined 'process.env' variables which will trump anything local per dotenv specs.
-        silent: true, // hide any errors
-        defaults: false, // load '.env.defaults' as the default values if empty.
-      })
-    );
-  }
+  const isEnvProduction = argv.mode === 'production';
+  const isEnvDevelopment = argv.mode === 'development';
 
-  return config;
+  return {
+    resolve: {
+      extensions: ['.tsx', '.ts', '.js'],
+    },
+    devtool: isEnvDevelopment ? 'inline-source-map' : undefined,
+    devServer: {
+      contentBase: path.join(__dirname, 'public'),
+      compress: true,
+      hot: true,
+      open: true,
+      port: 3000,
+    },
+    entry: path.resolve(__dirname, 'src', 'index.tsx'),
+    output: {
+      pathinfo: isEnvDevelopment,
+      path: path.resolve(__dirname, 'build'),
+      filename: isEnvProduction
+        ? 'scripts/[name].[contenthash:8].js'
+        : isEnvDevelopment && 'scripts/bundle.js',
+      chunkFilename: isEnvProduction
+        ? 'scripts/[name].[contenthash:8].chunk.js'
+        : 'scripts/[name].chunk.js',
+      publicPath: isEnvProduction
+        ? require(path.resolve('package.json')).homepage
+        : undefined,
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js(x?)$/,
+          exclude: /node_modules/,
+          use: ['babel-loader', 'eslint-loader'],
+        },
+        {
+          test: /\.ts(x?)$/,
+          exclude: /node_modules/,
+          use: ['babel-loader', 'eslint-loader'],
+        },
+        {
+          test: /\.module\.s(a|c)ss$/,
+          use: [
+            'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                modules: {
+                  localIdentName: '[name]__[local]___[contenthash:base64:5]',
+                },
+                importLoaders: 1,
+                sourceMap: true,
+              },
+            },
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true,
+                implementation: sass,
+              },
+            },
+          ],
+        },
+        {
+          test: /\.s(a|c)ss$/,
+          exclude: /\.module.(s(a|c)ss)$/,
+          use: [
+            // Creates `style` nodes from JS strings
+            'style-loader',
+            // Translates CSS into CommonJS
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: true,
+              },
+            },
+            // Compiles Sass to CSS
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true,
+                implementation: sass,
+              },
+            },
+          ],
+        },
+        {
+          test: /\.(png|svg|jpg|gif)$/i,
+          use: ['file-loader'],
+        },
+      ],
+    },
+    optimization: {
+      minimize: isEnvProduction,
+      minimizer: [
+        // This is only used in production mode
+        new TerserPlugin({
+          terserOptions: {
+            parse: {
+              // We want terser to parse ecma 8 code. However, we don't want it
+              // to apply any minification steps that turns valid ecma 5 code
+              // into invalid ecma 5 code. This is why the 'compress' and 'output'
+              // sections only apply transformations that are ecma 5 safe
+              // https://github.com/facebook/create-react-app/pull/4234
+              ecma: 8,
+            },
+            compress: {
+              ecma: 5,
+              warnings: false,
+              // Disabled because of an issue with Uglify breaking seemingly valid code:
+              // https://github.com/facebook/create-react-app/issues/2376
+              // Pending further investigation:
+              // https://github.com/mishoo/UglifyJS2/issues/2011
+              comparisons: false,
+              // Disabled because of an issue with Terser breaking valid code:
+              // https://github.com/facebook/create-react-app/issues/5250
+              // Pending further investigation:
+              // https://github.com/terser-js/terser/issues/120
+              inline: 2,
+            },
+            mangle: {
+              safari10: true,
+            },
+            // Added for profiling in devtools
+            keep_classnames: isEnvDevelopment,
+            keep_fnames: isEnvDevelopment,
+            output: {
+              ecma: 5,
+              comments: false,
+              // Turned on because emoji and regex is not minified properly using default
+              // https://github.com/facebook/create-react-app/issues/2488
+              ascii_only: true,
+            },
+          },
+          sourceMap: isEnvDevelopment,
+        }),
+        // This is only used in production mode
+        new OptimizeCssAssetsPlugin({
+          cssProcessorOptions: {
+            parser: safePostCssParser,
+            map: isEnvDevelopment
+              ? {
+                  // `inline: false` forces the sourcemap to be output into a
+                  // separate file
+                  inline: false,
+                  // `annotation: true` appends the sourceMappingURL to the end of
+                  // the css file, helping the browser find the sourcemap
+                  annotation: true,
+                }
+              : false,
+          },
+          cssProcessorPluginOptions: {
+            preset: ['default', { minifyFontValues: { removeQuotes: false } }],
+          },
+        }),
+      ],
+      // Automatically split vendor and commons
+      // https://twitter.com/wSokra/status/969633336732905474
+      // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
+      splitChunks: {
+        chunks: 'all',
+        name: false,
+      },
+      // Keep the runtime chunk separated to enable long term caching
+      // https://twitter.com/wSokra/status/969679223278505985
+      // https://github.com/facebook/create-react-app/issues/5358
+      runtimeChunk: {
+        name: (entrypoint) => `runtime-${entrypoint.name}`,
+      },
+    },
+    plugins: [
+      new HtmlWebpackPlugin({
+        template: path.resolve(__dirname, 'public/index.html'),
+      }),
+      new Dotenv({
+        path: isEnvDevelopment
+          ? './.env.development.local'
+          : './.env.production.local', // load this now instead of the ones in '.env'
+        safe: false, // If true, load '.env.example' to verify the '.env' variables are all set. Can also be a string to a different file.
+        allowEmptyValues: true, // Whether to allow empty strings in safe mode. If false, will throw an error if any env variables are empty (but only if safe mode is enabled).
+        systemvars: true, // load all the predefined 'process.env' variables which will trump anything local per dotenv specs.
+        silent: true, // hide any errors
+        defaults: false, // load '.env.defaults' as the default values if empty.
+      }),
+    ],
+  };
 };
