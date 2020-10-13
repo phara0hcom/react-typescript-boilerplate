@@ -13,8 +13,10 @@ Included some css with dark/light theming, might remove it since you don't want 
 - [x] scss modules and imports
 - [x] Update webpack to v5
 - [x] Improve webpack build production script
-- [x] GitHub Pages deploy script
 - [x] Webpack use .env.development.local
+- [x] FIX: GitHub Pages deploy script
+- [x] Improve webpack build script with chunks
+- [ ] Fix Manifest.json https://www.npmjs.com/package/webpack-pwa-manifest
 - [ ] Cypress testing
 - [ ] add some modules
   - [ ] Navbar
