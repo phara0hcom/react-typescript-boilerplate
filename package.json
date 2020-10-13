@@ -1,13 +1,26 @@
 {
   "name": "react-typescript-boiler",
-  "version": "0.5.0",
-  "description": "",
+  "version": "0.5.1",
+  "homepage": "https://phara0hcom.github.io/react-typescript-boilerplate",
+  "description": "React, TypeScript and css/sass/scss-modules boilerplate with ESlint and Prettier.",
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode production",
     "start": "webpack-dev-server --mode development"
   },
-  "keywords": [],
+  "keywords": [
+    "WIP",
+    "boilerplate",
+    "react",
+    "typescript",
+    "webpack",
+    "webpack5",
+    "SASS",
+    "SCSS",
+    "css-modules",
+    "eslint",
+    "prettier"
+  ],
   "author": "Tamer Elsayed (https://tamerelsayed.com)",
   "repository": {
     "type": "git",
