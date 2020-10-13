@@ -200,6 +200,9 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new HtmlWebpackPlugin({
+        publicUrl: isEnvProduction
+          ? `/${require(path.resolve('package.json')).name}/`
+          : '',
         template: path.resolve(__dirname, 'public/index.html'),
       }),
       new Dotenv({
