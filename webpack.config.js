@@ -217,7 +217,7 @@ module.exports = (env, argv) => {
       }),
       isEnvProduction &&
         new CopyPlugin({
-          patterns: [{ from: 'static', to: 'build' }],
+          patterns: [{ from: 'static' }],
         }),
     ],
   };
