@@ -217,7 +217,22 @@ module.exports = (env, argv) => {
       }),
       isEnvProduction &&
         new CopyPlugin({
-          patterns: [{ from: 'static' }],
+          patterns: [
+            {
+              from: path.posix.join(
+                path.resolve(__dirname, 'public').replace(/\\/g, '/'),
+                '**/*'
+              ),
+              globOptions: {
+                ignore: [
+                  // Ignore all `html` files
+                  '**/*.html',
+                  // Ignore all files in all subdirectories
+                  // '**/subdir/**',
+                ],
+              },
+            },
+          ],
         }),
     ],
   };

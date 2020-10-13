@@ -1,6 +1,6 @@
 {
   "name": "react-typescript-boilerplate",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "homepage": "https://phara0hcom.github.io/react-typescript-boilerplate",
   "description": "React, TypeScript and css/sass/scss-modules boilerplate with ESlint and Prettier.",
   "main": "index.js",
