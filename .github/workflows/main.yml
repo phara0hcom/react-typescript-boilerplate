@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.13"
+
+      - name: Build
+        # Add your environment Keys here and in you repository settings
+        # https://github.com/< userName >/< repository >/settings/secrets
+        # env:
+        #   YOUR_KEY_NAME: ${{ secrets.YOUR_KEY_NAME_GITHUB }}
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: build

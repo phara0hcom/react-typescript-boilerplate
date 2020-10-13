@@ -1,6 +1,7 @@
 const path = require('path');
 const sass = require('sass');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 var config = {
   resolve: {
@@ -92,6 +93,27 @@ var config = {
 module.exports = (env, argv) => {
   if (argv.mode === 'development') {
     config.devtool = 'source-map';
+    config.plugins.push(
+      new Dotenv({
+        path: './.env.development.local', // load this now instead of the ones in '.env'
+        safe: false, // If true, load '.env.example' to verify the '.env' variables are all set. Can also be a string to a different file.
+        allowEmptyValues: true, // Whether to allow empty strings in safe mode. If false, will throw an error if any env variables are empty (but only if safe mode is enabled).
+        systemvars: true, // load all the predefined 'process.env' variables which will trump anything local per dotenv specs.
+        silent: true, // hide any errors
+        defaults: false, // load '.env.defaults' as the default values if empty.
+      })
+    );
+  } else {
+    config.plugins.push(
+      new Dotenv({
+        path: './.env.production.local', // load this now instead of the ones in '.env'
+        safe: false, // If true, load '.env.example' to verify the '.env' variables are all set. Can also be a string to a different file.
+        allowEmptyValues: true, // Whether to allow empty strings in safe mode. If false, will throw an error if any env variables are empty (but only if safe mode is enabled).
+        systemvars: true, // load all the predefined 'process.env' variables which will trump anything local per dotenv specs.
+        silent: true, // hide any errors
+        defaults: false, // load '.env.defaults' as the default values if empty.
+      })
+    );
   }
 
   return config;
