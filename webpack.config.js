@@ -2,6 +2,7 @@ const path = require('path');
 const sass = require('sass');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const CopyPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const safePostCssParser = require('postcss-safe-parser');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -211,6 +212,10 @@ module.exports = (env, argv) => {
         silent: true, // hide any errors
         defaults: false, // load '.env.defaults' as the default values if empty.
       }),
+      isEnvProduction &&
+        new CopyPlugin({
+          patterns: [{ from: 'static', to: 'build' }],
+        }),
     ],
   };
 };
