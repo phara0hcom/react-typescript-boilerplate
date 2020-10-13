@@ -15,7 +15,7 @@ Included some css with dark/light theming, might remove it since you don't want 
 - [x] Improve webpack build production script
 - [x] Webpack use .env.development.local
 - [ ] FIX: GitHub Pages deploy script
-- [ ] Improve webpack build script with chunks an more minimification
+- [ ] Improve webpack build script with chunks and more minimification
 - [ ] Cypress testing
 - [ ] add some modules
   - [ ] Navbar

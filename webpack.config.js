@@ -33,7 +33,7 @@ module.exports = (env, argv) => {
         ? 'scripts/[name].[contenthash:8].chunk.js'
         : 'scripts/[name].chunk.js',
       publicPath: isEnvProduction
-        ? require(path.resolve('package.json')).homepage
+        ? `/${require(path.resolve('package.json')).name}/`
         : undefined,
     },
     module: {
@@ -59,13 +59,22 @@ module.exports = (env, argv) => {
                   localIdentName: '[name]__[local]___[contenthash:base64:5]',
                 },
                 importLoaders: 1,
-                sourceMap: true,
+                sourceMap: isEnvDevelopment,
+              },
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                sourceMap: isEnvDevelopment,
+                postcssOptions: {
+                  plugins: [require('autoprefixer')],
+                },
               },
             },
             {
               loader: 'sass-loader',
               options: {
-                sourceMap: true,
+                sourceMap: isEnvDevelopment,
                 implementation: sass,
               },
             },
@@ -81,14 +90,23 @@ module.exports = (env, argv) => {
             {
               loader: 'css-loader',
               options: {
-                sourceMap: true,
+                sourceMap: isEnvDevelopment,
+              },
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                sourceMap: isEnvDevelopment,
+                postcssOptions: {
+                  plugins: [require('autoprefixer')],
+                },
               },
             },
             // Compiles Sass to CSS
             {
               loader: 'sass-loader',
               options: {
-                sourceMap: true,
+                sourceMap: isEnvDevelopment,
                 implementation: sass,
               },
             },
@@ -105,6 +123,8 @@ module.exports = (env, argv) => {
       minimizer: [
         // This is only used in production mode
         new TerserPlugin({
+          cache: true,
+          sourceMap: isEnvDevelopment,
           terserOptions: {
             parse: {
               // We want terser to parse ecma 8 code. However, we don't want it
@@ -142,7 +162,6 @@ module.exports = (env, argv) => {
               ascii_only: true,
             },
           },
-          sourceMap: isEnvDevelopment,
         }),
         // This is only used in production mode
         new OptimizeCssAssetsPlugin({
@@ -175,7 +194,7 @@ module.exports = (env, argv) => {
       // https://twitter.com/wSokra/status/969679223278505985
       // https://github.com/facebook/create-react-app/issues/5358
       runtimeChunk: {
-        name: (entrypoint) => `runtime-${entrypoint.name}`,
+        name: (entryPoint) => `runtime-${entryPoint.name}`,
       },
     },
     plugins: [

@@ -1,5 +1,5 @@
 {
-  "name": "react-typescript-boiler",
+  "name": "react-typescript-boilerplate",
   "version": "0.5.1",
   "homepage": "https://phara0hcom.github.io/react-typescript-boilerplate",
   "description": "React, TypeScript and css/sass/scss-modules boilerplate with ESlint and Prettier.",
@@ -42,6 +42,7 @@
     "@types/react-dom": "^16.9.8",
     "@typescript-eslint/eslint-plugin": "^4.4.0",
     "@typescript-eslint/parser": "^4.4.0",
+    "autoprefixer": "^10.0.1",
     "babel-loader": "^8.1.0",
     "css-loader": "^4.3.0",
     "dotenv-webpack": "^3.0.0",
@@ -57,6 +58,8 @@
     "file-loader": "^6.1.1",
     "html-webpack-plugin": "^4.5.0",
     "optimize-css-assets-webpack-plugin": "^5.0.4",
+    "postcss": "^8.1.1",
+    "postcss-loader": "^4.0.4",
     "postcss-safe-parser": "^5.0.2",
     "prettier": "^2.1.2",
     "sass": "^1.27.0",
