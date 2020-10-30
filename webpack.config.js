@@ -220,10 +220,7 @@ module.exports = (env, argv) => {
             new CopyPlugin({
               patterns: [
                 {
-                  from: path.posix.join(
-                    path.resolve(__dirname, 'public').replace(/\\/g, '/'),
-                    '**/*'
-                  ),
+                  from: path.resolve(__dirname, 'public'),
                   globOptions: {
                     ignore: [
                       // Ignore all `html` files
