@@ -17,6 +17,7 @@ Included some css with dark/light theming, might remove it since you don't want 
 - [x] FIX: GitHub Pages deploy script
 - [x] Improve webpack build script with chunks
 - [ ] Fix Manifest.json https://www.npmjs.com/package/webpack-pwa-manifest
+- [ ] Remove File Loader
 - [ ] Cypress testing
 - [ ] add some modules
   - [ ] Navbar

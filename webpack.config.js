@@ -29,7 +29,7 @@ module.exports = (env, argv) => {
       path: path.resolve(__dirname, 'build'),
       filename: isEnvProduction
         ? 'scripts/[name].[contenthash:8].js'
-        : isEnvDevelopment && 'scripts/bundle.js',
+        : isEnvDevelopment && 'scripts/[name].bundle.js',
       chunkFilename: isEnvProduction
         ? 'scripts/[name].[contenthash:8].chunk.js'
         : 'scripts/[name].chunk.js',
@@ -215,25 +215,28 @@ module.exports = (env, argv) => {
         silent: true, // hide any errors
         defaults: false, // load '.env.defaults' as the default values if empty.
       }),
-      isEnvProduction &&
-        new CopyPlugin({
-          patterns: [
-            {
-              from: path.posix.join(
-                path.resolve(__dirname, 'public').replace(/\\/g, '/'),
-                '**/*'
-              ),
-              globOptions: {
-                ignore: [
-                  // Ignore all `html` files
-                  '**/*.html',
-                  // Ignore all files in all subdirectories
-                  // '**/subdir/**',
-                ],
-              },
-            },
-          ],
-        }),
+      ...(isEnvProduction
+        ? [
+            new CopyPlugin({
+              patterns: [
+                {
+                  from: path.posix.join(
+                    path.resolve(__dirname, 'public').replace(/\\/g, '/'),
+                    '**/*'
+                  ),
+                  globOptions: {
+                    ignore: [
+                      // Ignore all `html` files
+                      '**/*.html',
+                      // Ignore all files in all subdirectories
+                      // '**/subdir/**',
+                    ],
+                  },
+                },
+              ],
+            }),
+          ]
+        : []),
     ],
   };
 };
