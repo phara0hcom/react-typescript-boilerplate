@@ -16,9 +16,8 @@ Included some css with dark/light theming, might remove it since you don't want 
 - [x] Webpack use .env.development.local
 - [x] FIX: GitHub Pages deploy script
 - [x] Improve webpack build script with chunks
-- [x] Fix Manifest.json https://www.npmjs.com/package/webpack-pwa-manifest
-- [ ] Fix Build warnings
-- [ ] Remove File Loader
+- [x] Fix Manifest.json
+- [x] Routing (hash routing for github pages)
 - [ ] Cypress testing
 - [ ] add some modules
   - [ ] Navbar
@@ -27,6 +26,7 @@ Included some css with dark/light theming, might remove it since you don't want 
     - [ ] icon button
   - [ ] table
   - [ ] modal
+- [ ] Fix Build warnings (could fix itself with dependencies updates)
 - [ ] Full color theming or remove it
 
 <br>

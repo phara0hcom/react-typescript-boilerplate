@@ -18,6 +18,7 @@ module.exports = (env, argv) => {
     devtool: isEnvDevelopment ? 'inline-source-map' : undefined,
     devServer: {
       contentBase: path.join(__dirname, 'public'),
+      historyApiFallback: true,
       compress: true,
       hot: true,
       open: true,
@@ -202,7 +203,7 @@ module.exports = (env, argv) => {
       new HtmlWebpackPlugin({
         publicUrl: isEnvProduction
           ? `/${require(path.resolve('package.json')).name}/`
-          : '',
+          : '/',
         template: path.resolve(__dirname, 'public/index.html'),
       }),
       new Dotenv({
