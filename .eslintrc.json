@@ -26,6 +26,8 @@
   },
   "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
+    "@typescript-eslint/explicit-module-boundary-types": [0],
+    "react/prop-types": [0],
     "no-use-before-define": "off",
     "import/extensions": [
       "error",
