@@ -4,8 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const safePostCssParser = require('postcss-safe-parser');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = (env, argv) => {
   const isEnvProduction = argv.mode === 'production';
@@ -124,9 +123,10 @@ module.exports = (env, argv) => {
       minimize: isEnvProduction,
       minimizer: [
         // This is only used in production mode
-        new TerserPlugin({
-          cache: true,
+        new CssMinimizerPlugin({
           sourceMap: isEnvDevelopment,
+        }),
+        new TerserPlugin({
           terserOptions: {
             parse: {
               // We want terser to parse ecma 8 code. However, we don't want it
@@ -164,24 +164,19 @@ module.exports = (env, argv) => {
               ascii_only: true,
             },
           },
-        }),
-        // This is only used in production mode
-        new OptimizeCssAssetsPlugin({
-          cssProcessorOptions: {
-            parser: safePostCssParser,
-            map: isEnvDevelopment
-              ? {
-                  // `inline: false` forces the sourcemap to be output into a
-                  // separate file
-                  inline: false,
-                  // `annotation: true` appends the sourceMappingURL to the end of
-                  // the css file, helping the browser find the sourcemap
-                  annotation: true,
-                }
-              : false,
-          },
-          cssProcessorPluginOptions: {
-            preset: ['default', { minifyFontValues: { removeQuotes: false } }],
+          minify: (file, sourceMap) => {
+            // https://github.com/mishoo/UglifyJS2#minify-options
+            const uglifyJsOptions = {
+              /* your `uglify-js` package options */
+            };
+
+            if (sourceMap) {
+              uglifyJsOptions.sourceMap = {
+                content: sourceMap,
+              };
+            }
+
+            return require('uglify-js').minify(file, uglifyJsOptions);
           },
         }),
       ],
