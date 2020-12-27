@@ -1,6 +1,7 @@
 # (WIP) React-TypeScript-Boilerplate
 
-This is my attempt at a boilerplate still WIP. **Use at your own peril.**
+This is my attempt at a boilerplate still WIP. **Use at your own peril.** 
+`html-webpack-plugin@5.0.0-beta.1` is installed to fix a deprecation warnings.
 
 ## WARNING!
 
@@ -16,9 +17,9 @@ Included some css with dark/light theming, might remove it since you don't want 
 - [x] Webpack use .env.development.local
 - [x] FIX: GitHub Pages deploy script
 - [x] Improve webpack build script with chunks
-- [x] Fix Manifest.json https://www.npmjs.com/package/webpack-pwa-manifest
-- [ ] Fix Build warnings
-- [ ] Remove File Loader
+- [x] Fix Manifest.json
+- [x] Routing (hash routing for github pages)
+- [X] Fix Build warnings (could fix itself with dependencies updates)
 - [ ] Cypress testing
 - [ ] add some modules
   - [ ] Navbar
