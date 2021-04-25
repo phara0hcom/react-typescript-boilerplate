@@ -123,9 +123,7 @@ module.exports = (env, argv) => {
       minimize: isEnvProduction,
       minimizer: [
         // This is only used in production mode
-        new CssMinimizerPlugin({
-          sourceMap: isEnvDevelopment,
-        }),
+        new CssMinimizerPlugin(),
         new TerserPlugin({
           terserOptions: {
             parse: {
