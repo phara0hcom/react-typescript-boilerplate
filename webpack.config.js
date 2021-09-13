@@ -16,7 +16,7 @@ module.exports = (env, argv) => {
     },
     devtool: isEnvDevelopment ? 'inline-source-map' : undefined,
     devServer: {
-      contentBase: path.join(__dirname, 'public'),
+      static: path.join(__dirname, 'public'),
       historyApiFallback: true,
       compress: true,
       hot: true,

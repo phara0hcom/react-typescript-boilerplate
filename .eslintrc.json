@@ -26,6 +26,10 @@
   },
   "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
+    "import/no-extraneous-dependencies": [
+      "error",
+      { "devDependencies": ["**/*.test.ts", "**/*.test.tsx"] }
+    ],
     "react/prop-types": [0],
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
