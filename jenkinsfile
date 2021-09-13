@@ -1,0 +1,36 @@
+pipeline {
+  agent any
+    
+  stages {
+        
+    stage('install') {
+      steps {
+        nodejs(nodeJSInstallationName: 'Node 14.x') {
+          sh 'npm install'
+        }
+      }
+    }
+
+    stage('Test') {
+      steps {
+        nodejs(nodeJSInstallationName: 'Node 14.x') {
+          sh 'npm run test:ci'
+        }
+      }
+    }
+
+    stage('Integration') {
+      steps {
+        junit 'coverage/junit.xml'
+      }
+    }
+     
+    stage('Build') {
+      steps {
+        nodejs(nodeJSInstallationName: 'Node 14.x') {
+          sh 'npm run build'
+        }
+      }
+    }  
+  }
+}

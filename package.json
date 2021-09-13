@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest test",
+    "test:ci": "jest --ci --reporters=default --reporters=jest-junit",
     "build": "webpack --mode production",
     "start": "webpack serve --mode development",
     "predeploy": "npm run build",
@@ -68,6 +69,7 @@
     "html-webpack-plugin": "^5.3.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.1.1",
+    "jest-junit": "^12.2.0",
     "postcss": "^8.2.12",
     "postcss-loader": "^5.2.0",
     "postcss-safe-parser": "^5.0.2",
@@ -81,5 +83,8 @@
     "webpack": "^5.35.1",
     "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^4.2.0"
+  },
+  "jest-junit": {
+    "outputDirectory": "./coverage"
   }
 }
